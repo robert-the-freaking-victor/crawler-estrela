@@ -3,10 +3,18 @@ import Crawler from './crawler.js';
 
 class EstrelaCrawler extends Crawler {
 	
+	/**
+	 * Constructor function
+	 * @param {number} msTimeout timeout in ms
+	 */
 	constructor(msTimeout) {
 		super(msTimeout);
 	}
 
+	/**
+	 * Get all team names on the page and returns on an array
+	 * @returns {Promise<Array<string>>}
+	 */
 	async getTeamNames() {
 		const teamNames = await this.currentPage.evaluate(() => {
 			const generalItems = Array.from(document.querySelectorAll('.element.flex-item.match'));
@@ -24,6 +32,10 @@ class EstrelaCrawler extends Crawler {
 		return teamNames;
 	}
 
+	/**
+	 * Find all matches and fills it with odds and match date
+	 * @returns {Promise<Array<object>>}
+	 */
 	async findMatches() {
 		const teamNamesElementHandle = await this.currentPage.$$('.team-name.truncate');
 		const teamNamesPropertyPromise = teamNamesElementHandle.map(teamName => teamName.getProperty('textContent'));
@@ -59,6 +71,11 @@ class EstrelaCrawler extends Crawler {
 		return matchesFormated;
 	}
 
+	/**
+	 * Find dates from all matches
+	 * @param {number} indexLimit index limit of array dates, that is defined according to the number of matches
+	 * @returns {Promise<string>}
+	 */
 	async findDates(indexLimit) {
 		const dates = await this.currentPage.evaluate((indexLimit) => {
 			const hours = Array.from(document.querySelectorAll('.element.date.date-color'));
@@ -75,8 +92,11 @@ class EstrelaCrawler extends Crawler {
 		return dates;
 	}
 
+	/**
+	 * Find the odds of all matches
+	 * @returns {Promise<Array<object>>}
+	 */
 	async findOdds() {
-		// const odds = await this.currentPage.$$('.btn.bet-btn.waves-effect.waves-light.flex-item.twoRow.ng-star-inserted');
 		const odds = await this.currentPage.evaluate(() => {
 			const odds = Array.from(document.querySelectorAll('.btn.bet-btn.waves-effect.waves-light.flex-item.twoRow'));
 			const oddTextContent = odds.map(odd => odd.textContent);
@@ -85,9 +105,9 @@ class EstrelaCrawler extends Crawler {
 		const oddsFormated = [];
 		for(let i = 0; i < odds.length; i += 8) {
 			const oddMatch = {
-				OddHome: Normalize.getOnlyStringNumbers(odds[i]),
-				OddTie: Normalize.getOnlyStringNumbers(odds[i+1]),
-				OddAway: Normalize.getOnlyStringNumbers(odds[i+2])
+				OddHome: +Normalize.getOnlyStringNumbers(odds[i]),
+				OddTie: +Normalize.getOnlyStringNumbers(odds[i+1]),
+				OddAway: +Normalize.getOnlyStringNumbers(odds[i+2])
 			};
 			oddsFormated.push(oddMatch);
 		}

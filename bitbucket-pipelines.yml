@@ -1,0 +1,26 @@
+image: node:16
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Build and test
+          script:
+          - npm install
+          - npm test
+      - step:
+          name: Release
+          script:
+          - npm run release -- --release-as major
+          - git push --folow-tags
+    staging:
+      - step:
+          name: Build and test
+          script:
+          - npm install
+          - npm test
+      - step:
+          name: Release
+          script:
+          - npm run release -- --release-as minor
+          - git push --folow-tags

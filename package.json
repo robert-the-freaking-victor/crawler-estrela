@@ -1,0 +1,43 @@
+{
+  "name": "crawler-estrela",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --experimental-vm-modules index.js",
+    "start": "node --experimental-vm-modules index.js",
+    "release": "standard-version",
+    "lint": "npx eslint ./src --fix",
+    "release-minor": "standard-version -- --release-as minor && git push --follow-tags",
+    "release-major": "standard-version -- --release-as major && git push --follow-tags",
+    "release-patch": "standard-version -- --release-as patch && git push --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robert-the-freaking-victor/crawler-estrela.git"
+  },
+  "author": "robert-the-freaking-victor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robert-the-freaking-victor/crawler-estrela/issues"
+  },
+  "homepage": "https://github.com/robert-the-freaking-victor/crawler-estrela#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.0.1",
+    "eslint": "^8.11.0",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "standard-version": "^9.3.2"
+  },
+  "dependencies": {
+    "user-agents": "^1.0.1130",
+    "axios": "^0.26.1",
+    "cron": "^1.8.2",
+    "dotenv": "^16.0.0",
+    "log4js": "^6.4.5",
+    "puppeteer": "^13.4.1",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.11.0"
+  }
+}
